@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D _rgbd2;
 
     //Raycast Transform Locations - The Eyes of the AI
-    [SerializeField] Transform _RayCastAimDown;
+    [SerializeField] public Transform _RayCastAimDown;
 
     //Raycast Variables
     private RaycastHit2D rayCastDown;
@@ -26,9 +26,9 @@ public class Enemy : MonoBehaviour
 
 
     //States
-    private enum States{Spawn, Idle, Patrol, Abduct, Hunt};
+    private enum States { Spawn, Idle, Patrol, Abduct, Hunt, Escape };
 
-    [SerializeField]private States _currentState;
+    [SerializeField] private States _currentState;
 
     //Monobehaviour Logic
     void Start()
@@ -51,9 +51,13 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Bullet") ||
-                                        collision.CompareTag("Player") ||
-                                                                    collision.CompareTag("Enemy")) 
-            { OnDeath(); } //Calls on Death Function when colliding with player, bullet, or enemy
+                                        collision.CompareTag("Player"))
+        { OnDeath(); } //Calls on Death Function when colliding with player, bullet
+
+        else if (collision.CompareTag("Human"))
+        {
+            _currentState = States.Escape; 
+        }
     }
 
 
@@ -61,7 +65,26 @@ public class Enemy : MonoBehaviour
     #region Front Door Logic
     private void ActivateVision() //Used to determine the functionality of this AI Enemy IE can it look below, at angles etc
     {
-        LookForTargetBelow();
+        switch (_currentState)
+        {
+            case States.Spawn:
+                break;
+            case States.Idle:
+                LookForTargetBelow();
+                break;
+            case States.Patrol:
+                LookForTargetBelow();
+                break;
+            case States.Abduct:
+                break;
+            case States.Hunt:
+                LookForTargetBelow();
+                break;
+            case States.Escape:
+                break;
+        }
+    
+    
     }
     //TODO: Finish all Available States
     private void ActivateMovement() //Calls the MovementCoroutine
@@ -80,9 +103,14 @@ public class Enemy : MonoBehaviour
                 break;
 
             case States.Abduct:
+                OnAbduct();
                 break;
 
             case States.Hunt:
+                break;
+
+            case States.Escape:
+                OnEscape();
                 break;
         }
     }
@@ -112,13 +140,23 @@ public class Enemy : MonoBehaviour
     private void OnPatrol() //Starts the movement Coroutine
     {
         StopCoroutine("IdleWaitLogic");
+        StopCoroutine("AbductHuman");
         StartCoroutine("MoveLeftRight");
     }
 
     private void OnIdle() //Resets and Randomizes the move direction
     {
         StopCoroutine("MoveLeftRight");
+        StopCoroutine("AbductHuman");
         StartCoroutine("IdleWaitLogic");
+    }
+
+    private void OnEscape()
+    {
+        StopCoroutine("MoveLeftRight");
+        StopCoroutine("AbductHuman");
+        StopCoroutine("IdleWaitLogic");
+        StartCoroutine("Escape");
     }
     #endregion
 
@@ -146,6 +184,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
     //Enum Variables
     private int RandomMoveDirection; //The direction that is randomly chosen to Move
     private IEnumerator MoveLeftRight() //Moves this Enemy Left and Right for a period of time
@@ -162,16 +201,21 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(0f); //Waits a random amount between 1-2f seconds
         RandomMoveDirection = Random.Range(-1, 2); //Sets the move Direction to either left or right randomly
-      
+
         _currentState = States.Patrol; //Sets state back to patrol
     }
-    
-    private IEnumerator AbductHuman() //TODO: Finish this Functionality
+
+    private IEnumerator AbductHuman()
     {
-        _rgbd2.velocity = Vector2.zero;
-        yield return new WaitForSeconds(1f);
+        _rgbd2.velocity = new Vector2(0, (_MoveSpeed * 2) * Vector2.down.y * Time.deltaTime);
+        yield return new WaitForSeconds(0f);
     }
-    
-    
+
+    private IEnumerator Escape()
+    {
+        _rgbd2.velocity = new Vector2(0, (_MoveSpeed * 3) * Vector2.up.y * Time.deltaTime);
+        yield return new WaitForSeconds(0f);
+    }
+
     #endregion
 }
