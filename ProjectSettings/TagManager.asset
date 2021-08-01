@@ -41,15 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 1780295309
+    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: FG
-    uniqueID: 2603697699
     locked: 0
   - name: GameScene
     uniqueID: 3834219997
     locked: 0
-  - name: BG
-    uniqueID: 1780295309
+  - name: FG
+    uniqueID: 2603697699
     locked: 0

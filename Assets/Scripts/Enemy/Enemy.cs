@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]private States _currentState;
 
-    // Start is called before the first frame update
+    //Monobehaviour Logic
     void Start()
     {
         _currentState = States.Idle;
@@ -38,7 +38,6 @@ public class Enemy : MonoBehaviour
         _rgbd2 = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         ActivateVision();
@@ -46,18 +45,25 @@ public class Enemy : MonoBehaviour
     }
 
 
+
+
     //Collision Logic
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Bullet")) { OnDeath(); }
+        if (collision.CompareTag("Bullet") ||
+                                        collision.CompareTag("Player") ||
+                                                                    collision.CompareTag("Enemy")) 
+            { OnDeath(); } //Calls on Death Function when colliding with player, bullet, or enemy
     }
 
-    //Front Door Logic
+
+
+    #region Front Door Logic
     private void ActivateVision() //Used to determine the functionality of this AI Enemy IE can it look below, at angles etc
     {
         LookForTargetBelow();
     }
-
+    //TODO: Finish all Available States
     private void ActivateMovement() //Calls the MovementCoroutine
     {
         switch (_currentState)
@@ -80,12 +86,11 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
 
 
-
-
-    //Back Door Logic
+    #region Back Door Logic
     private void OnDeath() //Death Functionality
     {
         //TODO: Implement Death Visual Effect
@@ -95,6 +100,13 @@ public class Enemy : MonoBehaviour
     private void OnSpawn()
     {
 
+    }
+
+    private void OnAbduct()
+    {
+        StopCoroutine("IdleWaitLogic");
+        StopCoroutine("MoveLeftRight");
+        StartCoroutine("AbductHuman");
     }
 
     private void OnPatrol() //Starts the movement Coroutine
@@ -108,8 +120,11 @@ public class Enemy : MonoBehaviour
         StopCoroutine("MoveLeftRight");
         StartCoroutine("IdleWaitLogic");
     }
+    #endregion
 
-    //AI Logic
+
+
+    #region AI Logic
     private void LookForTargetBelow() //Uses a Raycast to look DOWN for a Target. This can be the Human or Player, then determines what the next state is.
     {
         rayCastDown = Physics2D.Raycast(_RayCastAimDown.position, Vector2.down);
@@ -131,12 +146,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-    private int RandomMoveDirection;
+    //Enum Variables
+    private int RandomMoveDirection; //The direction that is randomly chosen to Move
     private IEnumerator MoveLeftRight() //Moves this Enemy Left and Right for a period of time
     {
-        Debug.Log(RandomMoveDirection.ToString());
-        
         _rgbd2.velocity = new Vector2(_MoveSpeed * RandomMoveDirection * Time.deltaTime, 0);
 
         yield return new WaitForSeconds(4f);
@@ -152,5 +165,13 @@ public class Enemy : MonoBehaviour
       
         _currentState = States.Patrol; //Sets state back to patrol
     }
-
+    
+    private IEnumerator AbductHuman() //TODO: Finish this Functionality
+    {
+        _rgbd2.velocity = Vector2.zero;
+        yield return new WaitForSeconds(1f);
+    }
+    
+    
+    #endregion
 }
