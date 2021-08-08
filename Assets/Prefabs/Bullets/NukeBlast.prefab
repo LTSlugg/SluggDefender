@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7381520573617587436}
   - component: {fileID: 7381520573617587439}
   - component: {fileID: -5527187786152663688}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NukeBlast
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -460747299
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 02f71d7ea30bd2043a4350e45482f858, type: 3}
   m_Color: {r: 0.010145942, g: 0.7169812, b: 0.010145942, a: 1}

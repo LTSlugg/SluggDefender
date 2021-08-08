@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //
     GeneralControlsScript _inputActions;
     Rigidbody2D _rgbd2;
 
@@ -14,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _BulletSpawnTransform; //Where to spawn the 
     [SerializeField] private GameObject _PlayerDefaultBullet; //The default bullet game object
     [SerializeField] private GameObject _PlayerDefaultNuke; //The default nuke game object 
-
+    [SerializeField] public Transform _PlayerCarryTransform; //The transform location for the player to carry objects
 
     // Input Variables
     Vector2 _playerMoveDirection;
@@ -102,7 +101,14 @@ public class PlayerController : MonoBehaviour
     {
 
         if (collision.CompareTag("Enemy") || collision.CompareTag("Bullet"))
-        { Debug.Log("Has Hit Enemy"); }
+        { 
+            Debug.Log("Has Hit Enemy"); 
+        }
+
+        if(collision.CompareTag("Ground"))
+        {
+            Destroy(this.gameObject);
+        }
 
         //TODO: DO A CALL TO HEALTH SYSTEM TO SEE IF PLAYER IS DEAD
     }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Crappy StateMachine I litteraly made on the fly without much thought, this project seemed easy.
 public class Enemy : MonoBehaviour
 {
     //Component Variables
@@ -51,13 +53,10 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Bullet") ||
-                                        collision.CompareTag("Player"))
+                                        collision.CompareTag("Player") || collision.CompareTag("Ground"))
         { OnDeath(); } //Calls on Death Function when colliding with player, bullet
 
-        else if (collision.CompareTag("Human"))
-        {
-            _currentState = States.Escape; 
-        }
+        else if (collision.CompareTag("Human")) _currentState = States.Escape; //TODO: FInish this section to
     }
 
 
@@ -76,6 +75,7 @@ public class Enemy : MonoBehaviour
                 LookForTargetBelow();
                 break;
             case States.Abduct:
+                LookForTargetBelow();
                 break;
             case States.Hunt:
                 LookForTargetBelow();
@@ -158,6 +158,15 @@ public class Enemy : MonoBehaviour
         StopCoroutine("IdleWaitLogic");
         StartCoroutine("Escape");
     }
+    
+    
+    private IEnumerator SpeedBoost()
+    {
+        _rgbd2.AddForce(new Vector2(RandomMoveDirection * _MoveSpeed * Time.deltaTime, 
+                                                                                    1 * _MoveSpeed * Time.deltaTime), ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0f);
+    }
+    
     #endregion
 
 
@@ -169,15 +178,23 @@ public class Enemy : MonoBehaviour
 
         if (rayCastDown.collider != null) //Ensures the collider is not null
         {
+            if(rayCastDown.collider.tag == "Human" && rayCastDown.collider.gameObject.GetComponent<HumanAI>().IsSaved) { return; }
+            
+            else if (rayCastDown.collider.tag == "Human" && !rayCastDown.collider.gameObject.GetComponent<HumanAI>().CanBeAbducted) 
+            { 
+                _currentState = States.Patrol;
+                StartCoroutine("SpeedBoost");
+                return; 
+            }
+
+
             switch (rayCastDown.collider.tag) //Checks the tag of what the raycast saw then changes the current State
             {
                 case "Human":
-                    Debug.Log("Abduct Human");
                     _currentState = States.Abduct;
                     break;
 
                 case "Player":
-                    Debug.Log("Hunt Player");
                     _currentState = States.Hunt;
                     break;
             }
@@ -200,7 +217,13 @@ public class Enemy : MonoBehaviour
     private IEnumerator IdleWaitLogic() //The Idle waiting Logic
     {
         yield return new WaitForSeconds(0f); //Waits a random amount between 1-2f seconds
+        
         RandomMoveDirection = Random.Range(-1, 2); //Sets the move Direction to either left or right randomly
+        
+        while (RandomMoveDirection == 0)
+        {
+            RandomMoveDirection = Random.Range(-1, 2);
+        }
 
         _currentState = States.Patrol; //Sets state back to patrol
     }
@@ -216,6 +239,7 @@ public class Enemy : MonoBehaviour
         _rgbd2.velocity = new Vector2(0, (_MoveSpeed * 3) * Vector2.up.y * Time.deltaTime);
         yield return new WaitForSeconds(0f);
     }
+
 
     #endregion
 }
