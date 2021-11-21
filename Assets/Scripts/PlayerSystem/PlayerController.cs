@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         Instantiate<GameObject>(_PlayerDefaultNuke, this.transform.position, Quaternion.identity); //Spawns the Default Nuke at this location
     }
 
-    private void PlayerDead() //TODO: Finish this Funcion
+    private void PlayerDead() //TODO: Finish this function
     {
         Destroy(this.gameObject);
     }
@@ -110,6 +110,6 @@ public class PlayerController : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        //TODO: DO A CALL TO HEALTH SYSTEM TO SEE IF PLAYER IS DEAD
+        //TODO: DO A CALL TO HEALTH SYSTEM TO SEE IF PLAYER IS DEAD AND FINISH THIS FUNCTIONALITY
     }
 }

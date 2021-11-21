@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
 
 
     //States
-    private enum States { Spawn, Idle, Patrol, Abduct, Hunt, Escape };
+    private enum States { Spawn, Idle, Patrol, Abduct, Hunt, Escape};
 
     [SerializeField] private States _currentState;
 
@@ -42,8 +42,8 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        ActivateVision();
-        ActivateMovement();
+        //ActivateVision();
+        //ActivateMovement();
     }
 
 
@@ -56,10 +56,16 @@ public class Enemy : MonoBehaviour
                                         collision.CompareTag("Player") || collision.CompareTag("Ground"))
         { OnDeath(); } //Calls on Death Function when colliding with player, bullet
 
-        else if (collision.CompareTag("Human")) _currentState = States.Escape; //TODO: FInish this section to
+        else if (collision.CompareTag("Human")) _currentState = States.Escape;
     }
 
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.otherRigidbody.CompareTag("Enemy"))
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     #region Front Door Logic
     private void ActivateVision() //Used to determine the functionality of this AI Enemy IE can it look below, at angles etc
@@ -86,7 +92,7 @@ public class Enemy : MonoBehaviour
     
     
     }
-    //TODO: Finish all Available States
+
     private void ActivateMovement() //Calls the MovementCoroutine
     {
         switch (_currentState)
@@ -121,7 +127,6 @@ public class Enemy : MonoBehaviour
     #region Back Door Logic
     private void OnDeath() //Death Functionality
     {
-        //TODO: Implement Death Visual Effect
         Destroy(this.gameObject);
     }
 
@@ -158,15 +163,17 @@ public class Enemy : MonoBehaviour
         StopCoroutine("IdleWaitLogic");
         StartCoroutine("Escape");
     }
-    
-    
-    private IEnumerator SpeedBoost()
+
+    private void SpeedBoost(float xDir, float yDir)
     {
-        _rgbd2.AddForce(new Vector2(RandomMoveDirection * _MoveSpeed * Time.deltaTime, 
-                                                                                    1 * _MoveSpeed * Time.deltaTime), ForceMode2D.Impulse);
-        yield return new WaitForSeconds(0f);
+        _rgbd2.AddForce(new Vector2(xDir * _MoveSpeed * Time.deltaTime, 
+                                                                     yDir * _MoveSpeed * Time.deltaTime), ForceMode2D.Impulse);
     }
     
+    private void FreezeMovement()
+    {
+        _rgbd2.velocity = new Vector2(0, 0);
+    }
     #endregion
 
 
@@ -179,14 +186,6 @@ public class Enemy : MonoBehaviour
         if (rayCastDown.collider != null) //Ensures the collider is not null
         {
             if(rayCastDown.collider.tag == "Human" && rayCastDown.collider.gameObject.GetComponent<HumanAI>().IsSaved) { return; }
-            
-            else if (rayCastDown.collider.tag == "Human" && !rayCastDown.collider.gameObject.GetComponent<HumanAI>().CanBeAbducted) 
-            { 
-                _currentState = States.Patrol;
-                StartCoroutine("SpeedBoost");
-                return; 
-            }
-
 
             switch (rayCastDown.collider.tag) //Checks the tag of what the raycast saw then changes the current State
             {
@@ -230,16 +229,24 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator AbductHuman()
     {
-        _rgbd2.velocity = new Vector2(0, (_MoveSpeed * 2) * Vector2.down.y * Time.deltaTime);
+        _rgbd2.velocity = new Vector2(0, _rgbd2.velocity.y);
+        SpeedBoost(0, -.15f);
         yield return new WaitForSeconds(0f);
     }
 
     private IEnumerator Escape()
     {
+        yield return new WaitForSeconds(1.5f);
         _rgbd2.velocity = new Vector2(0, (_MoveSpeed * 3) * Vector2.up.y * Time.deltaTime);
-        yield return new WaitForSeconds(0f);
     }
 
 
     #endregion
+
+
+
+    private void OnDestroy() //Clean up a little bit of trash here
+    {
+        StopAllCoroutines();
+    }
 }
