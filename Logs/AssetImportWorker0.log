@@ -80,3 +80,26 @@ Received Import Request.
 Start importing Assets/Scripts/Enemy/Snatcher/E1_Snatcher.cs using Guid(dffee25ff57beec49b4e5d7183dd0ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e94e2b8bbe86c4999db611aedf2d636') in 0.167634 seconds
   Import took 0.207891 seconds .
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001326 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.60 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.421 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.58 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2147 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 98.0 MB.
+System memory in use after: 98.0 MB.
+
+Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 2603.
+Total: 2.665800 ms (FindLiveObjects: 0.295400 ms CreateObjectMapping: 0.067000 ms MarkObjects: 2.135600 ms  DeleteObjects: 0.166700 ms)
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
