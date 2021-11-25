@@ -19,12 +19,10 @@ public class E1_MoveState : MoveState
         base.Enter();
         
         patrolTime = Random.Range(stateData.MinPatrolTime, stateData.MaxPatrolTime); //Sets the random patrol time
-        
-        moveDirectionXWorkspace = Random.Range(-1, 2); //Sets the move direction to a random side
-        
-        if(moveDirectionXWorkspace == 0) { moveDirectionXWorkspace = Random.Range(-1, 2); } //Rolls the random range on the variable once more in case of 0
+        moveDirectionXWorkspace = Random.Range(-1, 2); //Sets the move direction to a random side   
+        if(moveDirectionXWorkspace == 0) { moveDirectionXWorkspace = Random.Range(-1, 2); } //Re Rolls the random range on the variable once more in case of 0
 
-        Debug.Log("In Move State");
+        Debug.Log("In Move State"); //TODO: REMOVE THIS DEBUG LOG
     }
 
 
@@ -38,14 +36,7 @@ public class E1_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        if (snatcherEntity.CheckGroundForHuman()) //Checks the ground for a human and Transitions into abduct state if true
-        {
-            snatcherEntity.stateMachine.ChangeState(snatcherEntity.abductState);
-        }
-        else if (Time.time >= startTime + patrolTime) //Transitions to the idle state if patrol time is over
-        {
-            snatcherEntity.stateMachine.ChangeState(snatcherEntity.idleState);
-        }
+        AbductHumanLogic();
     }
 
 
@@ -55,16 +46,21 @@ public class E1_MoveState : MoveState
 
         if (!snatcherEntity.CheckGroundForHuman())
         {
-            MoveRandomXDirection(); //Calls the Method that allows for movement along X Axis
+            snatcherEntity.MoveXDirection(moveDirectionXWorkspace, stateData.MoveSpeed); //Calls the Method that allows for movement along X Axis
         }
-
     }
 
 
-    //TODO: Extrapolate MOVEMENT Methods into the base State class to allow all derived classes the functionality
-    //Method that allows movement along the X Axis in a direction determined by the xDirection Workspace Variable
-    private void MoveRandomXDirection()
+    //Scans the ground for a Human, then resets to the Idle State of nothing is found within the patrol time
+    private void AbductHumanLogic()
     {
-        snatcherEntity._rgbd2.velocity = new Vector2(moveDirectionXWorkspace * stateData.MoveSpeed * Time.deltaTime, 0);
+        if (snatcherEntity.CheckGroundForHuman()) //Checks the ground for a human and Transitions into abduct state if true
+        {
+            snatcherEntity.stateMachine.ChangeState(snatcherEntity.abductState);
+        }
+        else if (Time.time >= startTime + patrolTime) //Transitions to the idle state if patrol time is over
+        {
+            snatcherEntity.stateMachine.ChangeState(snatcherEntity.idleState);
+        }
     }
 }

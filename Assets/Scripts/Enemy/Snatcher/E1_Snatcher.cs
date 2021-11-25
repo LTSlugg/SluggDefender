@@ -11,14 +11,17 @@ public class E1_Snatcher : Entity
     public E1_IdleState idleState { get; private set; }
     public E1_MoveState moveState { get; private set; }
     public E1_AbductState abductState { get; private set; }
+    public E1_EscapeState escapeState { get; private set; }
 
+    [Header("State Datas")]
     [SerializeField]
     private D_IdleState idleStateData;
     [SerializeField]
     private D_MoveState moveStateData;
     [SerializeField]
     private D_AbductState abductStateData;
-
+    [SerializeField]
+    private D_EscapeState escapeStateData;
 
     public bool didCollideWithHuman { get; private set; }
 
@@ -32,11 +35,14 @@ public class E1_Snatcher : Entity
         idleState = new E1_IdleState(this, stateMachine, idleStateData, this);
         moveState = new E1_MoveState(this, stateMachine, moveStateData, this);
         abductState = new E1_AbductState(this, stateMachine, abductStateData, this);
+        escapeState = new E1_EscapeState(this, stateMachine, escapeStateData, this);
+
 
         didCollideWithHuman = false;
         stateMachine.Intialize(idleState); //Sets the default state to Idle on start
     }
 
+    //Checks for Collisions
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag != null)
@@ -44,7 +50,12 @@ public class E1_Snatcher : Entity
             if(collision.tag == "Human")
             {
                 didCollideWithHuman = true;
-                Debug.Log("MY COLLIDER HIT A HUMAN- Bool: " + didCollideWithHuman); //TODO: Remove this Debug Log
+            } 
+
+            //Destroys Itself on Collision with Player
+            if(collision.tag == "Player")
+            {
+                Destroy(this);
             }
         }
     }

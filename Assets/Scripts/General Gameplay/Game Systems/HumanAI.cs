@@ -13,7 +13,7 @@ public class HumanAI : MonoBehaviour
 
 
     //Data Variables
-    [SerializeField]private Enemy _currentEnemy;
+    [SerializeField]private Entity _currentEnemy;
     [SerializeField]private PlayerController _currentPlayer;
 
     [Header("States")]
@@ -44,7 +44,7 @@ public class HumanAI : MonoBehaviour
     {
         if (_currentEnemy == null) { return; } //If Gameobject is null break out of function
         
-        this.transform.position = _currentEnemy._RayCastAimDown.position; //Clamps position to the enemies raycast position
+        this.transform.position = _currentEnemy.groundCheckTransform.position; //Clamps position to the enemies raycast position
     }
 
     private void GetSaved() //Anchors the object to this player
@@ -107,7 +107,7 @@ public class HumanAI : MonoBehaviour
         {
             if (collision.CompareTag("Enemy") && IsAbducted == false)
             {
-                _currentEnemy = collision.gameObject.GetComponent<Enemy>();
+                _currentEnemy = collision.gameObject.GetComponent<Entity>();
 
                 IsAbducted = true;
                 CanBeAbducted = false;

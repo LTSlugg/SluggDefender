@@ -15,7 +15,7 @@ public class Entity : MonoBehaviour
 
     public D_Entity entityData;
 
-
+    [Header("Positional Data")]
     [SerializeField] public Collider2D hitBox;
     [SerializeField] public Transform groundCheckTransform; //The transform from where the wall check raycast points originate
 
@@ -57,5 +57,30 @@ public class Entity : MonoBehaviour
         
         else
         {   return false; }
+    }
+
+    //Sets the Velocity to Zero to stop all movement
+    public void StopMoving()
+    {
+        _rgbd2.velocity = Vector2.zero; 
+    }
+
+    //Method that allows movement along the X Axis
+    public void MoveXDirection(float xDir, float MoveSpeed)
+    {
+        _rgbd2.velocity = new Vector2(xDir * MoveSpeed * Time.deltaTime, 0);
+    }
+
+    //Method that allows movement along the Y axis
+    public void MoveYDirection(float yDir, float MoveSpeed)
+    {
+        _rgbd2.velocity = new Vector2(0, yDir * MoveSpeed * Time.deltaTime);
+    }
+
+    //Gets assign a direction and speed to move
+    private void MoveDirection(float xDir, float yDir, float MoveSpeedX, float MoveSpeedY)
+    {
+        _rgbd2.velocity = new Vector2(xDir * MoveSpeedX * Time.deltaTime,
+                                                                        yDir * MoveSpeedY * Time.deltaTime);
     }
 }

@@ -16,7 +16,7 @@ public class IdleState : States
     public override void Enter()
     {
         base.Enter();
-        entity._rgbd2.velocity = Vector2.zero; //Sets the Velocity to Zero on state entry to stop all movement
+        entity.StopMoving();
         idleWaitTime = Random.Range(stateData.idleWaitTimeMin, stateData.idleWaitTimeMax);
     }
 

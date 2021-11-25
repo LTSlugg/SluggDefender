@@ -15,7 +15,7 @@ public class E1_IdleState : IdleState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("In Idle State"); //TODO: Remove This Debug Log
+        Debug.Log("In Idle State"); //TODO: REMOVE THIS DEBUG LOG
     }
 
     public override void Exit()
@@ -27,15 +27,27 @@ public class E1_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        //Checks to see if the wait time is over then changes the current state
-        if(IsDefaultWaitTimeOver())
-        {
-            stateMachine.ChangeState(snatcherEntity.moveState);
-        }
+        AbductHumanLogic();
+
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+    }
+
+    //Scans the ground for a Human, then resets to the Idle State of nothing is found within the patrol time
+    private void AbductHumanLogic()
+    {
+        if (snatcherEntity.CheckGroundForHuman()) //Checks the ground for a human and Transitions into abduct state if true
+        {
+            snatcherEntity.stateMachine.ChangeState(snatcherEntity.abductState);
+        }
+
+        //Checks to see if the wait time is over then changes the current state
+        else if(IsDefaultWaitTimeOver())
+        {
+            stateMachine.ChangeState(snatcherEntity.moveState);
+        }
     }
 }
