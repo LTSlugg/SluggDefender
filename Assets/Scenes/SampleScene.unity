@@ -1433,8 +1433,8 @@ MonoBehaviour:
   entityData: {fileID: 11400000, guid: 8a5724c4245e7294ca4d68347bfc7901, type: 2}
   hitBox: {fileID: 2012933520692939117}
   groundCheckTransform: {fileID: 2453300415600701951}
+  player: {fileID: 1008280619}
   idleStateData: {fileID: 11400000, guid: b664e1f9f1ddaaf409a40d3f5abf38ed, type: 2}
   moveStateData: {fileID: 11400000, guid: 61cb92bbaa0ac4c4ca18f0e412feaa6a, type: 2}
   abductStateData: {fileID: 11400000, guid: 84c222e8c3b8c564487281e5de90efce, type: 2}
   escapeStateData: {fileID: 11400000, guid: 0a07ce1c7efce2c42b26efdea1563523, type: 2}
-  abductPOS: {fileID: 0}

@@ -52,8 +52,4 @@ public class E1_AbductState : States
             snatcherEntity.MoveYDirection(Vector2.down.y, stateData.abductMoveSpeedDown);
         }
     }
-
-    //TODO: Extrapolate MOVEMENT Methods into the base State class to allow all derived classes the functionality
-    //Method that moves the enemy downward
-
 }

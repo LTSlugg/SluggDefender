@@ -19,9 +19,8 @@ public class Entity : MonoBehaviour
     [SerializeField] public Collider2D hitBox;
     [SerializeField] public Transform groundCheckTransform; //The transform from where the wall check raycast points originate
 
-
-    //public D_Entity entityData; //Ref to the Data File
-
+    [Header("Extra Data")]
+    [SerializeField] public PlayerController player;
 
     //Start function monobehaviour
     public virtual void Start() 
@@ -82,5 +81,13 @@ public class Entity : MonoBehaviour
     {
         _rgbd2.velocity = new Vector2(xDir * MoveSpeedX * Time.deltaTime,
                                                                         yDir * MoveSpeedY * Time.deltaTime);
+    }
+
+    private void IsPlayerClose()
+    {
+        if(player.transform.position.x - this.transform.position.x <= entityData.avoidDistance)
+        {
+            //TODO: FINISH This to allow the Enemies to see how close the player is and further allow them to move away or closer to the player
+        }
     }
 }
