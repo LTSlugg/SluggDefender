@@ -8,5 +8,5 @@ public class D_Entity : ScriptableObject
 {
     public string whatIsHuman = "Human";
     public float raycastDownDistance = 20f;
-    public float avoidDistance = 3f;
+    public float avoidDistance = 1f;
 }

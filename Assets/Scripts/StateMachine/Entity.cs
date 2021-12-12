@@ -83,11 +83,15 @@ public class Entity : MonoBehaviour
                                                                         yDir * MoveSpeedY * Time.deltaTime);
     }
 
-    private void IsPlayerClose()
+    //Function that checks to see if the player is within the avoid range
+    public bool IsPlayerClose()
     {
-        if(player.transform.position.x - this.transform.position.x <= entityData.avoidDistance)
+        if (NSMath.FloatApproximation(player.transform.position.x, this.gameObject.transform.position.x, entityData.avoidDistance) &&
+                                          NSMath.FloatApproximation(player.transform.position.y, this.gameObject.transform.position.y, entityData.avoidDistance))
         {
-            //TODO: FINISH This to allow the Enemies to see how close the player is and further allow them to move away or closer to the player
+            return true;
         }
+        else
+            return false;
     }
 }

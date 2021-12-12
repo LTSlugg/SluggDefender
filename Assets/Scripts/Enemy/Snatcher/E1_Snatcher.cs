@@ -24,12 +24,10 @@ public class E1_Snatcher : Entity
     private D_EscapeState escapeStateData;
 
     public bool didCollideWithHuman { get; private set; }
-
-
+    
     public override void Start()
     {
         base.Start();
-
 
         //Create instances of our state objects and fill constructors
         idleState = new E1_IdleState(this, stateMachine, idleStateData, this);
@@ -42,6 +40,18 @@ public class E1_Snatcher : Entity
         stateMachine.Intialize(idleState); //Sets the default state to Idle on start
     }
 
+    public override void Update()
+    {
+        base.Update();
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+
+
     //Checks for Collisions
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -53,9 +63,9 @@ public class E1_Snatcher : Entity
             } 
 
             //Destroys Itself on Collision with Player
-            if(collision.tag == "Player")
+            if(collision.tag == "Player" || collision.tag == "Bullet")
             {
-                Destroy(this);
+                Destroy(this.gameObject);
             }
         }
     }

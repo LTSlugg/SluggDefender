@@ -44,6 +44,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -122,5 +123,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba86c791d7ed2048adaa5ff98886225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TravelVelocity: 55
-  _DestroySelfSpeed: 2
+  travelVel: 55
+  destroySelfTimer: 3

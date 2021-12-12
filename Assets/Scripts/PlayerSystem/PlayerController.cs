@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _PlayerDefaultNuke; //The default nuke game object 
     [SerializeField] public Transform _PlayerCarryTransform; //The transform location for the player to carry objects
 
+
     // Input Variables
     Vector2 _playerMoveDirection;
     KeyCode _playerKeyCode;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         _inputActions = new GeneralControlsScript();
     }
+
 
     private void OnEnable()
     {
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
 
     // Back Door Logic
-    private void PlayerFire() //Spawns a bullet when the Fire Action Event is Called
+    private void PlayerFire() //Spawns a bullet when9 the Fire Action Event is Called
     {
         Instantiate<GameObject>(_PlayerDefaultBullet, _BulletSpawnTransform.position, Quaternion.Euler(0, 0, -90)); //Spawns the Default bullet at a location rotated -90 degrees on z axis
     }
