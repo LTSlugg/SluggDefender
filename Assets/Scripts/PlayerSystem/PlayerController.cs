@@ -50,7 +50,14 @@ public class PlayerController : MonoBehaviour
         _rgbd2 = GetComponent<Rigidbody2D>();
     }
 
+
+
     // Update is called once per frame
+    private void Update()
+    {
+       FlipPlayer();
+    }
+
     void FixedUpdate()
     {
         PlayerMove();
@@ -64,14 +71,17 @@ public class PlayerController : MonoBehaviour
     {
         _rgbd2.velocity = new Vector2(_PlayerMoveSpeed * _playerMoveDirection.x * Time.deltaTime,
                                                                                                  _PlayerMoveSpeed * _playerMoveDirection.y * Time.deltaTime);
+        Debug.Log("X: " + _playerMoveDirection.x + "   Y:" + _playerMoveDirection.y);
     }
 
 
     // Back Door Logic
     private void PlayerFire() //Spawns a bullet when9 the Fire Action Event is Called
     {
-        Instantiate<GameObject>(_PlayerDefaultBullet, _BulletSpawnTransform.position, Quaternion.Euler(0, 0, -90)); //Spawns the Default bullet at a location rotated -90 degrees on z axis
+       GameObject playerBullet = Instantiate<GameObject>(_PlayerDefaultBullet, _BulletSpawnTransform.position, Quaternion.Euler(0, 0, -90)); //Spawns the Default bullet at a location rotated -90 degrees on z axis
+        playerBullet.GetComponent<PlayerBullet>().moveDirection = this.transform.localScale.y; //Passes the looking direction of this GameObject into the moveDirection variable of the bullet that was just instantiated
     }
+
 
     private void PlayerNuke() //Spawns a nuke that clears the screen when the Fire Action Event is Called
     {
@@ -97,6 +107,26 @@ public class PlayerController : MonoBehaviour
     {
         return transform.position;
     }
+
+    
+    private void FlipPlayer() //Flips the player corresponding with move direction
+    {
+        switch (_playerMoveDirection.x)
+        {
+            case -1:
+                this.transform.localScale = new Vector3(transform.localScale.x,
+                                                                                _playerMoveDirection.x,
+                                                                                                           transform.localScale.z);
+                break;
+
+            case 1:
+                this.transform.localScale = new Vector3(transform.localScale.x,
+                                                                                _playerMoveDirection.x,
+                                                                                                           transform.localScale.z);
+                break;
+        }
+    }
+
 
     //Collision Logic
     private void OnTriggerEnter2D(Collider2D collision)
