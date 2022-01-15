@@ -24,6 +24,7 @@ public class E1_Snatcher : Entity
     private D_EscapeState escapeStateData;
 
     public bool didCollideWithHuman { get; private set; }
+    public bool isAvoidingPlayer = false;
     
     public override void Start()
     {
@@ -48,6 +49,7 @@ public class E1_Snatcher : Entity
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+        AvoidPlayer();
     }
 
 
@@ -67,6 +69,22 @@ public class E1_Snatcher : Entity
             {
                 Destroy(this.gameObject);
             }
+        }
+    }
+
+    //Avoids the player if he is near
+    private void AvoidPlayer()
+    {
+        if (IsPlayerClose())
+        {
+            MoveDirection(Mathf.Sign(this.transform.position.x - player.transform.position.x), 
+                                                    Mathf.Sign(this.transform.position.y - player.transform.position.y),
+                                                                            moveStateData.MoveSpeed * 2, moveStateData.MoveSpeed * 2);
+            isAvoidingPlayer = true;
+        }
+        else
+        {
+            isAvoidingPlayer = false;
         }
     }
 }

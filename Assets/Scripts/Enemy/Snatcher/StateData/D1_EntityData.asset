@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: D1_EntityData
   m_EditorClassIdentifier: 
   whatIsHuman: Human
-  raycastDownDistance: 20
+  raycastDownDistance: 19.93
+  avoidDistance: 1.25

@@ -6,7 +6,7 @@ public class PlayerBullet : MonoBehaviour
 {
     // Data Variables
     [SerializeField]private float travelVel = 15;
-    [SerializeField]private float destroySelfTimer = 4f;
+    [SerializeField]private float destroySelfTimer = 2f;
 
     public float moveDirection;
 
@@ -16,6 +16,7 @@ public class PlayerBullet : MonoBehaviour
         Move();
     }
 
+    //Moves the Bullet in a set direction
     private void Move()
     {
         transform.Translate(0, travelVel * moveDirection * Time.deltaTime, 0);
@@ -23,6 +24,7 @@ public class PlayerBullet : MonoBehaviour
         Destroy(this.gameObject, destroySelfTimer);
     }
 
+    //Will destroy this game object on trigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.CompareTag("Enemy"))

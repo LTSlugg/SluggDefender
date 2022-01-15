@@ -7,6 +7,7 @@ using UnityEngine;
     Entity class handles most of the base function any Enemy will do, like Set velocity, set movement direction, face and follow player. ETC....
  */
 
+
 public class Entity : MonoBehaviour
 {
     public FiniteStateMachine stateMachine;
@@ -77,7 +78,7 @@ public class Entity : MonoBehaviour
     }
 
     //Gets assign a direction and speed to move
-    private void MoveDirection(float xDir, float yDir, float MoveSpeedX, float MoveSpeedY)
+    public void MoveDirection(float xDir, float yDir, float MoveSpeedX, float MoveSpeedY)
     {
         _rgbd2.velocity = new Vector2(xDir * MoveSpeedX * Time.deltaTime,
                                                                         yDir * MoveSpeedY * Time.deltaTime);

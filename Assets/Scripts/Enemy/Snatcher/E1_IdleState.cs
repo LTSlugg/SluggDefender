@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * The Default State that is entered by the Snatcher entity
+ */
+
 public class E1_IdleState : IdleState
 {
 

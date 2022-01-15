@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * After Abducting a Astronaut the Snatcher enters this state in order to escape the atmosphere and spawn in an Aviator
+ */
 public class E1_EscapeState : States
 {
     private E1_Snatcher snatcherEntity;
@@ -33,7 +36,8 @@ public class E1_EscapeState : States
     {
         base.PhysicsUpdate();
 
-        snatcherEntity.MoveYDirection(Vector2.up.y, stateData.escapeSpeed); //Moves up as soon as he latches onto the Human
+        if(!snatcherEntity.isAvoidingPlayer)
+            snatcherEntity.MoveYDirection(Vector2.up.y, stateData.escapeSpeed); //Moves up as soon as he latches onto the Human
     }
 
     //TODO: Add Function that allows Snatcher to slightly move away from the Player as he approaches

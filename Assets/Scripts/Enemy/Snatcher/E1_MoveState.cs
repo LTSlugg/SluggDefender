@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * The Move State Logic for the Snatcher Entity
+ */
+
 public class E1_MoveState : MoveState
 {
     private E1_Snatcher snatcherEntity;
@@ -43,8 +47,8 @@ public class E1_MoveState : MoveState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-
-        if (!snatcherEntity.CheckGroundForHuman())
+        //If the Snatcher doesnt see a human at the ground and is not avoiding the player
+        if (!snatcherEntity.CheckGroundForHuman() && !snatcherEntity.isAvoidingPlayer)
         {
             snatcherEntity.MoveXDirection(moveDirectionXWorkspace, stateData.MoveSpeed); //Calls the Method that allows for movement along X Axis
         }

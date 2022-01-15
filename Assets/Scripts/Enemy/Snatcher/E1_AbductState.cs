@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Abduct State handles the entity moving downward towards the Human until it collides with it
-//Then this state will transition into the Escape State
+/*
+ * Abduct State handles the entity moving downward towards the Astronaut Entity until it collides with it
+ * Then this state will transition into the Escape State
+*/
 
 public class E1_AbductState : States
 {
